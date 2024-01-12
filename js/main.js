@@ -4,6 +4,7 @@ import {
   getColorListElement,
   getTimerElement,
   getPlayAgainButton,
+  getColorBackground,
 } from './selectors.js'
 import {
   createTimer,
@@ -58,13 +59,22 @@ function handleClickOnColor(liElement) {
   const secondColor = selections[1].dataset.color
   const isMatch = firstColor === secondColor
   if (isMatch) {
+    // change background color of game
+    const backgroundGame = getColorBackground()
+    if (backgroundGame) {
+      backgroundGame.style.backgroundColor = selections[0].dataset.color
+    }
+    // reset selections
     selections = []
+
+    // Case win
     if (isWinGame()) {
       showPlayAgainButton()
       setTimerText('You Win')
       gameStatus = GAME_STATUS.FINISHED
       timer.clear()
     }
+
     return
   }
   gameStatus = GAME_STATUS.BLOCKING
